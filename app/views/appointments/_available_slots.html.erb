@@ -1,0 +1,32 @@
+<div class="card p-5">
+  <%= form_with(model: Appointment) do |f| %>
+    <% if @available_slots.present? %>
+      <% @available_slots&.each do |available_slot| %>
+        <div class="inner_cards">
+          <div class="row align-items-center">
+            <div class="col-xl-9 col-sm-8">
+              <div class="row">
+                <div class="col-lg-auto px-2 col-6 mb-2">
+                  <div class="">
+                    <% start_time = available_slot.start_time.localtime.strftime("%I:%M %p") %>
+                    <% end_time = available_slot.end_time.localtime.strftime("%I:%M %p") %>
+                    <% obj = "#{start_time}" + " - " +  "#{end_time}" %>
+                    <% status = get_slot(start_time, end_time,appointment) if appointment.present? %>
+                    <%= f.radio_button "slot", obj, {checked: status} %>
+                    <%= f.label "slot", obj %>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <div class="actions mt-2">
+        <%= f.submit appointment.present? ? "Update Appointment" : "Create Appointment", class: "btn btn-primary" %>
+      </div>
+    <% else %>
+      No Slots Available
+    <% end %>
+  <% end %>
+</div>

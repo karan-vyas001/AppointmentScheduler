@@ -1,0 +1,40 @@
+<header class="navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg container" >
+    <%= link_to "AppointmentScheduler", root_path, class: "navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <% if user_signed_in? %>
+          <% if current_user.has_role?(:Doctor) %>
+            <li class="nav-item">
+              <%= link_to "Availabilities", availabilities_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Booked Appointments", booked_appointments_availabilities_path, class: "nav-link" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Appointments", appointments_path, class: "nav-link" %>
+            </li>
+          <% end %>
+            <li class="nav-item">
+              <%= link_to "#{current_user&.full_name} (#{current_user&.roles&.first&.name})", edit_user_registration_path, class: "nav-link" %>
+            </li>
+          <li class="nav-item ms-5">
+            <%= link_to "Sign Out", destroy_user_session_path, :method => :delete, class: "ps-3 pe-3 text-white nav-link btn btn-secondary" %>
+          </li>
+        <% else %>
+          <li class="nav-item ms-5">
+            <%= link_to "Sign In", new_user_session_path, class: "text-white ps-3 pe-3 nav-link btn btn-primary" %>
+          </li>
+          <li class="nav-item ms-5">
+            <%= link_to "Sign Up", new_user_registration_path, class: "text-white ps-3 pe-3 nav-link btn btn-primary" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+</header>

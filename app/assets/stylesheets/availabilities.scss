@@ -1,0 +1,52 @@
+// Place all the styles related to the Availabilities controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.time_slot_update input {
+  padding: 0;
+  height: initial;
+  width: initial;
+  margin-bottom: 0;
+  display: none;
+  cursor: pointer;
+}
+
+.time_slot_update label {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  z-index: 2;
+  border-radius: 10px;
+  border:1px solid #e3e3e3;
+  padding:0.85vw 1.042vw;
+  font-size: 0.85vw;
+}
+
+.time_slot_update label:before {
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  background-color:transparent;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  border-radius: 10px;
+
+}
+
+.time_slot_update input:checked + label:before {
+  background-color: green;
+}
+
+.intpanel .time_slot_update label{
+  background-color: #e3e3e3;
+}
+
+.disabled_times{
+  pointer-events: none;
+}
+
+.wrapper{
+  cursor: not-allowed;
+}

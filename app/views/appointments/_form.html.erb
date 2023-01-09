@@ -1,0 +1,80 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card p-5">
+        <%= form_with(model: appointment) do |form| %>
+          <% if appointment.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+              <ul>
+                <% appointment.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field mb-3">
+            <%= form.label :date %>
+            <%= form.text_field :date, autocomplete: false, class: "form-control" %>
+          </div>
+
+          <div class="field mb-3">
+            <%= form.label :user_id %>
+            <%= form.select :user_id, options_for_select(User.all.collect { |p| [ p.full_name, p.id ]}, selected: form.object.user_id), {include_blank: 'Select User'}, { class: "form-select"} %>
+          </div>
+
+          <div id="available_slots">
+            <%= render 'available_slots' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#appointment_date').attr('autocomplete', 'off');
+  $('#appointment_date').datepicker({
+    dateFormat: "dd-mm-yy"
+  });
+
+  $("#appointment_date").change(function(){
+    var date = $('#appointment_date').val();
+    $.ajax({url: '/appointments/get_users',
+      method: 'GET',
+      dataType: "script",
+      data: {
+        date: date
+      }
+    });
+  });
+
+  $("#appointment_user_id").change(function(){
+    var user_id = $('#appointment_user_id').val();
+    var date = $('#appointment_date').val();
+    $.ajax({url: '/appointments/get_slots',
+      method: 'GET',
+      dataType: "script",
+      data: {
+        user_id: user_id,
+        date: date
+      }
+    });
+  });
+
+  $(document).ready(function(){
+    var user_id = $('#appointment_user_id').val();
+    var date = $('#appointment_date').val();
+    var id = <%= params[:id] %>
+    $.ajax({url: '/appointments/get_slots',
+      method: 'GET',
+      dataType: "script",
+      data: {
+        user_id: user_id,
+        date: date,
+        id: id
+      }
+    });
+  });
+</script>

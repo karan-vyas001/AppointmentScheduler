@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  booked: false
+  date: 2023-01-02
+  start_time: 2023-01-02 09:54:21
+  end_time: 2023-01-02 09:54:21
+  user: one
+  booked_by: one
+
+two:
+  booked: false
+  date: 2023-01-02
+  start_time: 2023-01-02 09:54:21
+  end_time: 2023-01-02 09:54:21
+  user: two
+  booked_by: two

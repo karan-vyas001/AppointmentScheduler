@@ -1,0 +1,64 @@
+<div class="tab-pane card p-3" id="CurrentWeek" role="tabpanel">
+  <div class="table-responsive">
+    <table class="table table-common">
+    <%= form_with url: availabilities_path, remote: true do |f| %>
+      <% Date::DAYNAMES.rotate(1).each do |day| %>
+        <div class="inner_cards">
+          <% check_day_status = check_day(day) %>
+          <div class="row <%= 'wrapper' if check_day_status %>">
+            <div class="col-md-2 mb-2 mb-md-0">
+              <div
+                class="h-100 rounded-start text-center p-2 d-flex align-items-center justify-content-center bg-primary-light">
+                <h2 class="text-secondary">
+                  <%= day %> (<%= Date.parse(day).strftime("%d-%m-%Y") %>)
+                </h2>
+              </div>
+            </div>
+            <div class="col-md-10 <%= 'disabled_times' if check_day_status %>">
+              <div class="row">
+              <% arr = ["10:00 AM - 11:00 AM", "11:00 AM - 12:00 PM", "12:00 PM - 01:00 PM", "01:00 PM - 02:00 PM", "02:00 PM - 03:00 PM", "03:00 PM - 04:00 PM", "04:00 PM - 05:00 PM", "05:00 PM - 06:00 PM", "06:00 PM - 07:00 PM", "07:00 PM - 08:00 PM"] %>
+              <% arr.each_with_index do |arr_object, index| %>
+                <div class="col-md-auto px-2 col-sm-4 col-6 mb-2">
+                  <div class="time_slot_update ">
+                    <% status = availability_created?(day, arr_object) %>
+                    <%= check_box_tag "[#{day}_#{index}]", arr_object, status, {class: "form-control check_box_slots", data: {user_id: current_user.id, day: day, slot: arr_object, current_week: 0}} %>
+                    <%= label_tag "[#{day}_#{index}]", arr_object %>
+                  </div>
+                </div>
+              <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    </table>
+  </div>
+</div>
+
+
+<script>
+  $(document).on('click', '.check_box_slots', function(e){
+    var day = this.dataset.day;
+    var slot = this.dataset.slot.split('-');
+    var user_id = this.dataset.userId;
+
+    $.ajax({
+      url: "/availabilities",
+      method: 'POST',
+      data: {
+        day_availability: {
+          name: day,
+          start_time: slot[0],
+          end_time: slot[1],
+          user_id: user_id
+        }
+      },
+      dataType: 'script',
+      success: function(){
+      }
+    });
+  });
+
+
+</script>
